@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ApiController;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -11,6 +13,22 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
+router()->group(['prefix' => '/api/v1'], function () {
+    router()->get('/regenerate[/{count}]',
+        ApiController::class . '@regenerate');
+
+    router()->get('/task/pages/{limit:[1-9]\d*}',
+        ApiController::class . '@pages');
+
+    router()->get('/task/limit/{limit:[1-9]\d*}/page/{page:[1-9]\d*}',
+        ApiController::class . '@paginated');
+
+    router()->get('/task',
+        ApiController::class . '@all');
+
+    router()->get('/task/{id}',
+        ApiController::class . '@one');
+
+    router()->get('/filter/{filter}',
+        ApiController::class . '@filter');
 });
